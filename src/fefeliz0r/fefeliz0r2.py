@@ -23,7 +23,7 @@ class myHandler(BaseHTTPRequestHandler):
         for p in soup.findAll('p'):
             try:
                 if random() > AUGMENTATION_PROB:
-                    if random() > 0.5:
+                    if random() > 0.75:
                         p.append(choice(FEFE_POSTFIX_QUOTES))
                     else:
                         p.insert(0, choice(FEFE_PREFIX_QUOTES))
@@ -57,6 +57,10 @@ class myHandler(BaseHTTPRequestHandler):
     
     def do_GET(self):
         url = split(self.requestline)[1][1:]
+        if '' is url:
+            self.wfile.write(open('no_url.html', 'r').read())
+            return
+        
         try:
             referer = self.headers['Referer']
             if not referer.startswith(OWN_URL):
