@@ -74,23 +74,14 @@ class myHandler(BaseHTTPRequestHandler):
                 print 'Unknown encoding: ' + encoding
             req.close()
             self.send_response(200)
-            try:
-                self.send_header('Content-type',req.headers['content-type'])
-            except:
-                self.send_header('Content-type',req.headers['text/html'])
+            self.send_header('Content-type','text/html;charset=utf-8')
             self.end_headers()
             content = rebase(url, content)
             content = rebase_links(OWN_URL, content)
             content = self.fixJS(content)
             self.find_errors(content)
             content = self.add_fefe(content)
-            try:
-                self.wfile.write(content.encode(encoding))
-            except:
-                try:
-                    self.wfile.write(content.encode('CP-1252'))
-                except:
-                    self.wfile.write(content)
+            self.wfile.write(content.encode('utf-8'))
         except Exception as e:
             self.wfile.write(self.makeHtml(e))
             pass
