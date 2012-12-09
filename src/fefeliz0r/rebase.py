@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+# took from & thanks to: http://a3nm.net/blog/htmlrebase.html
+
 """Resolve relative links in an HTML blob according to a base"""
 from BeautifulSoup import BeautifulSoup
 import sys

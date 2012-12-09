@@ -6,7 +6,7 @@ import cgi
 #from pyquery import PyQuery
 from rebase import rebase, rebase_links
 
-PORT_NUMBER = 8080
+PORT = 8080
 OWN_URL = 'http://localhost:8080/'
 
 class myHandler(BaseHTTPRequestHandler):
@@ -61,12 +61,11 @@ class myHandler(BaseHTTPRequestHandler):
     
 if __name__ == '__main__':
     try:
-        server = HTTPServer(('', PORT_NUMBER), myHandler)
-        print 'Started httpserver on port ' , PORT_NUMBER
+        server = HTTPServer(('', PORT), myHandler)
+        print 'Started httpserver on port ' , PORT
         
         server.serve_forever()
     
     except KeyboardInterrupt:
         print '^C received, shutting down the web server'
         server.socket.close()
-    
