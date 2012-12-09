@@ -3,7 +3,7 @@
 # took from & thanks to: http://a3nm.net/blog/htmlrebase.html
 
 """Resolve relative links in an HTML blob according to a base"""
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 import sys
 import urlparse
 
@@ -48,7 +48,7 @@ def rebase(base, data):
                 pass
             else:
                 link[attr] = rebase_one(base, url, False)
-    return unicode(soup)
+    return unicode(soup.prettify(formatter = None))
 
 def rebase_links(base, data):
     """Rebase _all_ 'a' links in the HTML blob data according to base"""
@@ -62,7 +62,7 @@ def rebase_links(base, data):
             else:
                 if link[attr] != 'javascript:void(0);':
                     link[attr] = rebase_one(base, url, True)
-    return unicode(soup)
+    return unicode(soup.prettify(formatter = None))
 
 if __name__ == '__main__':
     try:
