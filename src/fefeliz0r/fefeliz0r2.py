@@ -5,14 +5,35 @@ from shlex import split
 import urllib2
 import cgi
 from rebase import rebase, rebase_links
-from SimpleProxy import SimpleProxy
+#from SimpleProxy import SimpleProxy
+from bs4 import BeautifulSoup
+from FefeQuotes import FEFE_PREFIX_QUOTES, FEFE_POSTFIX_QUOTES
+from random import random, choice
 
 PORT = 8080
 OWN_URL = 'http://localhost:8080/'
 PROXY_PORT = 8081
 PROXY_URL = 'http://localhost:8081'
+AUGMENTATION_PROB = 0.125
+AUGMENTATION_MIN_LENGTH = 8
 
 class myHandler(BaseHTTPRequestHandler):
+    def augment_links(self, html):
+        soup = BeautifulSoup(html)
+        for p in soup.findAll('p'):
+            try:
+                if random() > AUGMENTATION_PROB:
+                    if random() > 0.5:
+                        p.append(choice(FEFE_POSTFIX_QUOTES))
+                    else:
+                        p.insert(0, choice(FEFE_PREFIX_QUOTES))
+            except:
+                pass
+        return unicode(soup.prettify(formatter = None))
+    
+    def add_fefe(self, html):
+        return self.augment_links(html)
+
     def find_errors(self, html):
         idx = 0
         while idx is not -1:
@@ -62,6 +83,7 @@ class myHandler(BaseHTTPRequestHandler):
             content = rebase_links(OWN_URL, content)
             content = self.fixJS(content)
             self.find_errors(content)
+            content = self.add_fefe(content)
             try:
                 self.wfile.write(content.encode(encoding))
             except:
@@ -79,9 +101,10 @@ if __name__ == '__main__':
         server = HTTPServer(('', PORT), myHandler)
         print 'Started httpserver on port ' , PORT
         server.serve_forever()
-        
+        '''
         proxy_server = SimpleProxy('', PROXY_PORT)
         proxy_server.main_loop()
+        '''
     
     except KeyboardInterrupt:
         print '^C received, shutting down the web server'

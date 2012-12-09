@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 FEFE_POSTFIX_QUOTES = [
     ' (Danke, Christian)',
     ' (Danke, Arno)',
@@ -66,7 +69,7 @@ FEFE_INFIX_QUOTES = [
     ' Harrharrharr. '
 ]
 
-LINK_WARNINGS = [
+FEFE_LINK_WARNINGS = [
     ' (Die Webseite ist auf kroatisch, Google Translate hilft)',
     ' Der war auch schon vor meinem Link langsam!',
     ' <b>Update</b> : Jetzt geht die Webseite wieder aber der PDF-Link von gestern nicht mehr. Dieser ranzige Cloud-Mist immer!1!!'
