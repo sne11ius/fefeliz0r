@@ -10,6 +10,11 @@ PORT = 8080
 OWN_URL = 'http://localhost:8080/'
 
 class myHandler(BaseHTTPRequestHandler):
+    def find_errors(self, html):
+        idx = html.find('="/');
+        if idx is not -1:
+            print html[idx-200:idx+200]
+    
     def fixJS(self, html):
         f = open('ajaxFixer.js', 'r')
         script = '<script>' + f.read() + '</script>'
@@ -47,6 +52,7 @@ class myHandler(BaseHTTPRequestHandler):
             content = rebase(url, content)
             content = rebase_links(OWN_URL, content)
             content = self.fixJS(content)
+            self.find_errors(content)
             try:
                 self.wfile.write(content.encode(encoding))
             except:
