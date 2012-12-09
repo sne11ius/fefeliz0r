@@ -1,12 +1,15 @@
 (function(XHR) {
     "use strict";
+    
+    var proxyHost = '$PROXY_URL'
 
     var open = XHR.prototype.open;
     var send = XHR.prototype.send;
 
     XHR.prototype.open = function(method, url, async, user, pass) {
         this._url = url;
-        alert('intercept0r(open) - url: ' + url);
+        //alert('intercept0r(open) - url: ' + url);
+        alert('activating proxy through ' + proxyHost);
         open.call(this, method, url, async, user, pass);
     };
 

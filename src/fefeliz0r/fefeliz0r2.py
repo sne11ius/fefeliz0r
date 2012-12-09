@@ -1,13 +1,16 @@
 #!/usr/bin/env python
+
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 from shlex import split
 import urllib2
 import cgi
-#from pyquery import PyQuery
 from rebase import rebase, rebase_links
+from SimpleProxy import SimpleProxy
 
 PORT = 8080
 OWN_URL = 'http://localhost:8080/'
+PROXY_PORT = 8081
+PROXY_URL = 'http://localhost:8081'
 
 class myHandler(BaseHTTPRequestHandler):
     def find_errors(self, html):
@@ -22,7 +25,8 @@ class myHandler(BaseHTTPRequestHandler):
     
     def fixJS(self, html):
         f = open('ajaxFixer.js', 'r')
-        script = '<script>' + f.read() + '</script>'
+        script = '<script type="text/javascript">' + f.read() + '</script>'
+        script = script.replace('$PROXY_URL', PROXY_URL);
         insert_position = html.find('</title>') + 8 
         html = html[:insert_position] + script + html[insert_position + 1:]
         return html
@@ -74,8 +78,10 @@ if __name__ == '__main__':
     try:
         server = HTTPServer(('', PORT), myHandler)
         print 'Started httpserver on port ' , PORT
-        
         server.serve_forever()
+        
+        proxy_server = SimpleProxy('', PROXY_PORT)
+        proxy_server.main_loop()
     
     except KeyboardInterrupt:
         print '^C received, shutting down the web server'
