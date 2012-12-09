@@ -23,10 +23,10 @@ class myHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         url = split(self.requestline)[1][1:]
         try:
-            self.headers['Referer']
-            f = open('no_referer.html', 'r')
-            self.wfile.write(f.read())
-            return
+            referer = self.headers['Referer']
+            if not referer.startswith(OWN_URL):
+                self.wfile.write(open('no_referer.html', 'r').read())
+                return
         except:
             pass
         try:
