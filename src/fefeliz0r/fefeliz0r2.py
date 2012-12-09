@@ -49,10 +49,10 @@ class myHandler(BaseHTTPRequestHandler):
             content = self.fixJS(content)
             try:
                 self.wfile.write(content.encode(encoding))
-            except (Exception, LookupError) as e:
+            except:
                 try:
                     self.wfile.write(content.encode('CP-1252'))
-                except (Exception, LookupError) as e:
+                except:
                     self.wfile.write(content)
         except Exception as e:
             self.wfile.write(self.makeHtml(e))
