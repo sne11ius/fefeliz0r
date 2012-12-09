@@ -11,9 +11,14 @@ OWN_URL = 'http://localhost:8080/'
 
 class myHandler(BaseHTTPRequestHandler):
     def find_errors(self, html):
-        idx = html.find('="/');
-        if idx is not -1:
-            print html[idx-200:idx+200]
+        idx = 0
+        while idx is not -1:
+            idx = html.find('="/', idx)
+            if idx is not -1:
+                print '============================= begin stuff ============================='
+                print html[idx-200:idx++200]
+                print '=============================== end stuff ============================='
+                idx += 1
     
     def fixJS(self, html):
         f = open('ajaxFixer.js', 'r')
