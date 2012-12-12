@@ -17,6 +17,10 @@ PROXY_URL = 'http://localhost:8081'
 AUGMENTATION_PROB = 0.125
 AUGMENTATION_MIN_LENGTH = 8
 
+REPLACEMENTS = [
+    'PROXY_URL'
+]
+
 class myHandler(BaseHTTPRequestHandler):
     def augment_links(self, html):
         soup = BeautifulSoup(html)
@@ -44,12 +48,37 @@ class myHandler(BaseHTTPRequestHandler):
                 print '=============================== end stuff ============================='
                 idx += 1
     
+    def insert_script(self, filename, html):
+        f = open(filename, 'r')
+        script = '<script type="text/javascript">' + f.read() + '</script>'
+        insert_position = html.find('</title>') + 8
+        html = html[:insert_position] + script + html[insert_position:]
+        return html;
+
+    def insert_remote_script(self, url, html):
+        script = '<script type="text/javascript" src="' + url + '"></script>'
+        insert_position = html.find('</title>') + 8
+        html = html[:insert_position] + script + html[insert_position:]
+        return html;
+    
+    def replace_vars(self, txt):
+        for replacement in REPLACEMENTS:
+            txt = txt.replace('$' + replacement, replacement);
+        return txt
+            
+    
     def fixJS(self, html):
+        '''
         f = open('ajaxFixer.js', 'r')
         script = '<script type="text/javascript">' + f.read() + '</script>'
         script = script.replace('$PROXY_URL', PROXY_URL);
-        insert_position = html.find('</title>') + 8 
+        insert_position = html.find('</title>') + 8
         html = html[:insert_position] + script + html[insert_position + 1:]
+        '''
+        html = self.insert_script('fbomb.js', html)
+        html = self.insert_script('ajaxFixer.js', html)
+        html = self.insert_remote_script('https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js' , html)
+        html = self.replace_vars(html)
         return html
     
     def makeHtml(self, stuff):
@@ -83,8 +112,9 @@ class myHandler(BaseHTTPRequestHandler):
             content = rebase(url, content)
             content = rebase_links(OWN_URL, content)
             content = self.fixJS(content)
-            self.find_errors(content)
-            content = self.add_fefe(content)
+            #self.find_errors(content)
+            #content = self.add_fefe(content)
+            print content.encode('utf-8')
             self.wfile.write(content.encode('utf-8'))
         except Exception as e:
             self.wfile.write(self.makeHtml(e))
