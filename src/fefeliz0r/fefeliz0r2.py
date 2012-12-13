@@ -10,10 +10,16 @@ from bs4 import BeautifulSoup
 from FefeQuotes import FEFE_PREFIX_QUOTES, FEFE_POSTFIX_QUOTES
 from random import random, choice
 
-PORT = 8080
-OWN_URL = 'http://localhost:8080/'
-PROXY_PORT = 8081
-PROXY_URL = 'http://localhost:8081'
+try:
+    from os import chroot as woooot
+    woooot('./')
+except:
+    print 'cannot chroot D:'
+
+PORT = 31337
+OWN_URL = 'http://wasis.nu/mit/fefe/in/'
+#PROXY_PORT = 8081
+#PROXY_URL = 'http://localhost:8081'
 AUGMENTATION_PROB = 0.125
 AUGMENTATION_MIN_LENGTH = 8
 
@@ -85,6 +91,9 @@ class myHandler(BaseHTTPRequestHandler):
         return '<html><body>' + cgi.escape(str(stuff)) + '<body></html>'
     
     def do_GET(self):
+        with open('fefeliz0r.log', 'a') as logfile:
+            logfile.write('requested: ' + self.requestline + '\n')
+        print 'requested: ' + self.requestline
         url = split(self.requestline)[1][1:]
         if '' is url:
             self.wfile.write(open('no_url.html', 'r').read())
@@ -132,5 +141,5 @@ if __name__ == '__main__':
         '''
     
     except KeyboardInterrupt:
-        print '^C received, shutting down the web server'
+        print '^C received, shutting the fuck up'
         server.socket.close()
