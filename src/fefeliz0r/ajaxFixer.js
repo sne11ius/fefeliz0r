@@ -9,16 +9,16 @@
     XHR.prototype.open = function(method, url, async, user, pass) {
         this._url = url;
         //alert('intercept0r(open) - url: ' + url);
-        console.log('activating proxy through ' + proxyHost);
-        console.log('for url: ' + url);
+        //console.log('activating proxy through ' + proxyHost);
+        //console.log('for url: ' + url);
     };
 
     XHR.prototype.send = function(data) {
-    	console.log('intercept0r(send) - data: ' + data);
+    	//console.log('intercept0r(send) - data: ' + data);
         var self = this;
         var oldOnReadyStateChange;
         var url = this._url;
-        console.log('not doing anything for now...');
+        //console.log('not doing anything for now...');
         return;
 
         function onReadyStateChange() {

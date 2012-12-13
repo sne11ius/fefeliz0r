@@ -2,86 +2,50 @@
 var values = {};
 
 jQuery(document).ready(function() {
-	//var tags = ['a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div'];
-	var tags = ['a', 'p', 'div'];
-	//var tags = ['a'];//, 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div'];
+	//var tags = ['a'];
+	var tags = ['a', 'h1', 'h2', 'h3', 'p', 'div', 'li', 'span'];
+	
+	var lists = {};
 	
 	jQuery.each(tags, function(key, tag) {
-		var elemList = [];
-		$(tag).each(function(index) {
-			var obj = $(this)
-					, outerWidth = $(obj).outerWidth()
-					, outerHeight = $(obj).outerHeight()
-					, offset = $(obj).offset()
-					, position = $(obj).position()
-			elemList.push({
-				'outerWidth': outerWidth,
-				'outerHeight': outerHeight,
-				'offset': offset,
-				'position': position
-			})
-		});
-		values[tag] = elemList;
+		lists[tag] = $(tag).map(function(index, elem) {
+			var e = $(elem),
+					text = $.trim(e.clone().children().remove().end().text()),
+					area = e.outerWidth() * e.outerHeight();
+			var result = {
+				elem: e,
+				width: e.outerWidth(),
+				height: e.outerHeight(),
+				top: e.offset().top,
+				left: e.offset().left,
+				offset: e.offset(),
+				position: e.position(),
+				area: area, 
+				text: text,
+				ratio: area / text.length
+			};
+			return isFinite(result.ratio) && 0 != result.text.length && 0 != result.ratio ? result : undefined;
+		}).get();
 	});
-	console.log(values);
 	
-	var sums = {};
+	lists.a.sort(function(a, b) {
+		return b.ratio - a.ratio;
+	});
 	
-	for (var tag in tags) {
-		var currentSums = [];
-		for (var elem in values[tags[tag]]) {
-			//console.log('[obj.outerWidth()] => ' + elem.outerWidth);
-			//console.log('[obj.outerHeight()] => ' + elem.outerHeight);
-			//console.log('[obj] => ' + values[tags[tag]][elem]);
-			currentSums.push(values[tags[tag]][elem].outerWidth * values[tags[tag]][elem].outerHeight); 
-		}
-		sums[tags[tag]] = currentSums;
-	}
-	console.log(sums);
-	
-	for (var i = 0; i < tags.length; ++i) {
-		var tag = tags[i];
-		var sumList = sums[tag];
-		var valuesList = values[tag];
-		
-		for (var j = 0; j < sumList.length; ++j) {
-			var sum = sumList[j];
-			var width = valuesList[j].outerWidth;
-			var height = valuesList[j].outerHeight;
-			var top = valuesList[j].offset.top + valuesList[j].position.top;
-			var left = valuesList[j].offset.left + valuesList[j].position.left;
-			var div = '<div style="position:absolute;border:1px solid black;width:' + width
-						+ 'px;height:' + height
-						+ 'px;top:' + top
-						+ 'px;left:' + left
-						+ 'px;background-color:red;z-index:' + j + ';">' + tag + '</div>';
-						//+ ';background-color:' + sum + ';"></div>';
-			$('body').append(div);
-			console.log(j);
-		}
-	}
-	
-	function sortmyway(data_A, data_B) {
-		return (data_A - data_B);
-	}
-	for (var i = 0; i < tags.length; ++i) {
-		var tag = tags[i];
-		var sumList = sums[tag];
-		var valuesList = values[tag];
-		
-		
-	}
-	//var list =[ 39, 108, 21, 55, 18, 9]
-	//list.sort(sortmyway) //[9, 18, 21, 39, 55, 108]
-	
-	
+	console.log(lists);
 
-	
-	/*
-	for (var tag in tags) {
-		var currentSums = sums[tags[tag]];
-		$(body).append('<div>');
+	for (var j = 0; j < tags.length; ++j) {
+		var tag = tags[j];
+		var list = lists[tag];
+		for (var i = 0; i < 20 && i < list.length; ++i) {
+			var e = list[i];
+			console.log(e);
+			var div = '<div style="position:absolute;border:1px solid black;width:' + e.width
+					+ 'px;height:' + e.height
+					+ 'px;top:' + e.top
+					+ 'px;left:' + e.left
+					+ 'px;background-color:rgba(255,0,0,0.2);z-index:' + e.ratio + ';">' + tag + ' -> ' + e.ratio + '</div>';
+			var insertedDiv = $('body').append(div);
+		}
 	}
-	*/
-	
 });

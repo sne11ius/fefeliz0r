@@ -129,7 +129,7 @@ class myHandler(BaseHTTPRequestHandler):
             content = self.fixJS(content)
             #self.find_errors(content)
             #content = self.add_fefe(content)
-            print content.encode('utf-8')
+            #print content.encode('utf-8')
             self.wfile.write(content.encode('utf-8'))
         except Exception as e:
             self.wfile.write(self.makeHtml(e))
