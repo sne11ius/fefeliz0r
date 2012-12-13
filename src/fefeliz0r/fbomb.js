@@ -22,14 +22,14 @@ jQuery(document).ready(function() {
 				position: e.position(),
 				area: area, 
 				text: text,
-				ratio: area / text.length
+				ratio: text.length / area
 			};
 			return isFinite(result.ratio) && 0 != result.text.length && 0 != result.ratio ? result : undefined;
 		}).get();
 	});
 	
 	lists.a.sort(function(a, b) {
-		return b.ratio - a.ratio;
+		return a.ratio - b.ratio;
 	});
 	
 	console.log(lists);
@@ -37,6 +37,9 @@ jQuery(document).ready(function() {
 	for (var j = 0; j < tags.length; ++j) {
 		var tag = tags[j];
 		var list = lists[tag];
+		list.sort(function(a, b) {
+			return b.ratio - a.ratio;
+		});
 		for (var i = 0; i < 20 && i < list.length; ++i) {
 			var e = list[i];
 			console.log(e);
