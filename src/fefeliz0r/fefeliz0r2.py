@@ -10,6 +10,10 @@ from bs4 import BeautifulSoup
 from FefeQuotes import FEFE_PREFIX_QUOTES, FEFE_POSTFIX_QUOTES
 from random import random, choice
 
+# fuckaround for no-bug http://bugs.python.org/issue10865
+from socket import getaddrinfo
+getaddrinfo('www.google.com', 80)
+
 try:
     from os import chroot as woooot
     woooot('./')
@@ -111,7 +115,7 @@ class myHandler(BaseHTTPRequestHandler):
         try:
             req = urllib2.urlopen(url)
             content = req.read()
-            encoding=req.headers['content-type'].split('charset=')[-1]
+            encoding = req.headers['content-type'].split('charset=')[-1]
             try:
                 content = unicode(content, encoding)
             except:
