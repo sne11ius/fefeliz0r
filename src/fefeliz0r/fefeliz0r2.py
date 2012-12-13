@@ -98,6 +98,8 @@ class myHandler(BaseHTTPRequestHandler):
         if '' is url:
             self.wfile.write(open('no_url.html', 'r').read())
             return
+
+        print 'url: ' + url
         
         try:
             referer = self.headers['Referer']
