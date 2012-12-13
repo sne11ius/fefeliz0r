@@ -94,7 +94,7 @@ class myHandler(BaseHTTPRequestHandler):
         with open('fefeliz0r.log', 'a') as logfile:
             logfile.write('requested: ' + self.requestline + '\n')
         print 'requested: ' + self.requestline
-        url = split(self.requestline)[1][1:]
+        url = split(self.requestline)[1][13:]
         if '' is url:
             self.wfile.write(open('no_url.html', 'r').read())
             return
