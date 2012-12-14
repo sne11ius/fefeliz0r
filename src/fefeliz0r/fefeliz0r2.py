@@ -51,10 +51,12 @@ class myHandler(BaseHTTPRequestHandler):
     def find_errors(self, html):
         idx = 0
         while idx is not -1:
-            idx = html.find('="/', idx)
-            if idx is not -1:
+            #idx = html.find('="/', idx)
+            idx = html.find(OWN_URL, idx)
+            if idx is not 0:
                 print '============================= begin stuff ============================='
-                print html[idx-200:idx++200]
+                print html[idx:idx++100]
+                print html[idx-100:idx++100]
                 print '=============================== end stuff ============================='
                 idx += 1
     
@@ -127,7 +129,7 @@ class myHandler(BaseHTTPRequestHandler):
             content = rebase(url, content)
             content = rebase_links(OWN_URL, content)
             content = self.fixJS(content)
-            #self.find_errors(content)
+            self.find_errors(content)
             #content = self.add_fefe(content)
             #print content.encode('utf-8')
             self.wfile.write(content.encode('utf-8'))
@@ -135,7 +137,7 @@ class myHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.makeHtml(e))
             pass
         return
-    
+
 if __name__ == '__main__':
     try:
         server = HTTPServer(('', PORT), myHandler)

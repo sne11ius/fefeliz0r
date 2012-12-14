@@ -16,7 +16,7 @@ jQuery(document).ready(function() {
 	}
 
 	//var tags = ['a'];
-	var tags = ['a', 'h1', 'h2', 'h3', 'p', 'div', 'li', 'span'];
+	var tags = ['a', 'h1', 'h2', 'h3', 'p', 'div', 'li', 'span', 'b'];
 	
 	var lists = {};
 	
@@ -85,7 +85,7 @@ jQuery(document).ready(function() {
 					+ 'px;height:' + e.height
 					+ 'px;top:' + e.top
 					+ 'px;left:' + e.left
-					+ 'px;background-color:rgba(' + color + ');z-index:' + 1000 + ';">' + tag + ' -> ' + e.text.length + '</div>';
+					+ 'px;background-color:rgba(' + color + ');z-index:' + 1000 + ';">' + tag + ' ==> ' + e.text.length + '</div>';
 			var insertedDiv = $('body').append(div);
 		}
 	}
