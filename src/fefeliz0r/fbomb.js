@@ -2,6 +2,19 @@
 var values = {};
 
 jQuery(document).ready(function() {
+	
+	function getStyle(el, styleProp) {
+		if (el.currentStyle) {
+			return el.currentStyle[styleProp];
+		} else if (document.defaultView && document.defaultView.getComputedStyle) {
+			var computedStyle = document.defaultView.getComputedStyle(el, null)
+			if (computedStyle)
+				return computedStyle.getPropertyValue(styleProp);
+		} else {
+			return el.style[styleProp];
+		}
+	}
+	
 	//var tags = ['a'];
 	var tags = ['a', 'h1', 'h2', 'h3', 'p', 'div', 'li', 'span'];
 	
@@ -22,32 +35,55 @@ jQuery(document).ready(function() {
 				position: e.position(),
 				area: area, 
 				text: text,
-				ratio: text.length / area
+				ratio: text.length / area,
+				fontSize: getStyle(e, 'fontSize')
 			};
-			return isFinite(result.ratio) && 0 != result.text.length && 0 != result.ratio ? result : undefined;
+			return isFinite(result.ratio) && result.text.length > 20 && 0 != result.ratio ? result : undefined;
 		}).get();
 	});
-	
+	/*
 	lists.a.sort(function(a, b) {
-		return a.ratio - b.ratio;
+		return b.fontSize - a.fontSize;
 	});
-	
+	*/
 	console.log(lists);
-
+	
+	var storyThreshold = 60;
+	var storys = [];
+	var headlines = [];
+	
+	for (var j = 0; j < tags.length; ++j) {
+		var tag = tags[j];
+		var list = lists[tag];
+		for (var i = 0; i < list.length; ++i) {
+			if (list[i].text.length > storyThreshold)
+				storys.push(list[i]);
+			else
+				headlines.push(list[i]);
+		}
+	}
+	
+	lists = {
+		'storys': storys,
+		'headlines': headlines
+	};
+	tags = ['storys', 'headlines'];
+	
 	for (var j = 0; j < tags.length; ++j) {
 		var tag = tags[j];
 		var list = lists[tag];
 		list.sort(function(a, b) {
-			return b.ratio - a.ratio;
+			return a.ratio - b.ratio;
 		});
-		for (var i = 0; i < 20 && i < list.length; ++i) {
+		var color = tag == 'headlines' ? '255,0,0,0.2' : '0,255,0,0.2';
+		for (var i = 0; i < 200 && i < list.length; ++i) {
 			var e = list[i];
 			console.log(e);
 			var div = '<div style="position:absolute;border:1px solid black;width:' + e.width
 					+ 'px;height:' + e.height
 					+ 'px;top:' + e.top
 					+ 'px;left:' + e.left
-					+ 'px;background-color:rgba(255,0,0,0.2);z-index:' + e.ratio + ';">' + tag + ' -> ' + e.ratio + '</div>';
+					+ 'px;background-color:rgba(' + color + ');z-index:' + 1000 + ';">' + tag + ' -> ' + e.text.length + '</div>';
 			var insertedDiv = $('body').append(div);
 		}
 	}
