@@ -101,7 +101,7 @@ class myHandler(BaseHTTPRequestHandler):
             logfile.write('requested: ' + self.requestline + '\n')
         print 'requested: ' + self.requestline
         url = split(self.requestline)[1][13:]
-        if '' is url:
+        if '' is url or not url.startswith('http://'):
             self.wfile.write(open('no_url.html', 'r').read())
             return
 
