@@ -129,7 +129,7 @@ class myHandler(BaseHTTPRequestHandler):
             content = rebase(url, content)
             content = rebase_links(OWN_URL, content)
             content = self.fixJS(content)
-            self.find_errors(content)
+            #self.find_errors(content)
             #content = self.add_fefe(content)
             #print content.encode('utf-8')
             self.wfile.write(content.encode('utf-8'))
