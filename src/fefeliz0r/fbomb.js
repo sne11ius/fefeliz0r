@@ -2,7 +2,7 @@
 var values = {};
 
 jQuery(document).ready(function() {
-	
+
 	function getStyle(el, styleProp) {
 		if (el.currentStyle) {
 			return el.currentStyle[styleProp];
@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
 			return el.style[styleProp];
 		}
 	}
-	
+
 	//var tags = ['a'];
 	var tags = ['a', 'h1', 'h2', 'h3', 'p', 'div', 'li', 'span'];
 	
@@ -41,16 +41,11 @@ jQuery(document).ready(function() {
 			return isFinite(result.ratio) && result.text.length > 20 && 0 != result.ratio ? result : undefined;
 		}).get();
 	});
-	/*
-	lists.a.sort(function(a, b) {
-		return b.fontSize - a.fontSize;
-	});
-	*/
-	console.log(lists);
 	
 	var storyThreshold = 60;
 	var storys = [];
 	var headlines = [];
+	var links = [];
 	
 	for (var j = 0; j < tags.length; ++j) {
 		var tag = tags[j];
@@ -59,15 +54,21 @@ jQuery(document).ready(function() {
 			if (list[i].text.length > storyThreshold)
 				storys.push(list[i]);
 			else
-				headlines.push(list[i]);
+				if ('a' == tag)
+					links.push(list[i]);
+				else
+					headlines.push(list[i]);
 		}
 	}
 	
 	lists = {
 		'storys': storys,
-		'headlines': headlines
+		'headlines': headlines,
+		'links': links
 	};
-	tags = ['storys', 'headlines'];
+	console.log(lists);
+	tags = ['storys', 'headlines', 'links'];
+	console.log(tags);
 	
 	for (var j = 0; j < tags.length; ++j) {
 		var tag = tags[j];
@@ -76,9 +77,10 @@ jQuery(document).ready(function() {
 			return a.ratio - b.ratio;
 		});
 		var color = tag == 'headlines' ? '255,0,0,0.2' : '0,255,0,0.2';
+		color = tag == 'links' ? '0,0,255,0.2' : color;
 		for (var i = 0; i < 200 && i < list.length; ++i) {
 			var e = list[i];
-			console.log(e);
+			//console.log(e);
 			var div = '<div style="position:absolute;border:1px solid black;width:' + e.width
 					+ 'px;height:' + e.height
 					+ 'px;top:' + e.top
