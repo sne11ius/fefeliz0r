@@ -31,18 +31,6 @@ REPLACEMENTS = [
 ]
 
 class myHandler(BaseHTTPRequestHandler):
-    def find_errors(self, html):
-        idx = 0
-        while idx is not -1:
-            #idx = html.find('="/', idx)
-            idx = html.find(OWN_URL, idx)
-            if idx is not 0:
-                print '============================= begin stuff ============================='
-                print html[idx:idx++100]
-                print html[idx-100:idx++100]
-                print '=============================== end stuff ============================='
-                idx += 1
-    
     def insert_script(self, filename, html):
         f = codecs.open(filename, encoding='utf-8', mode='r')
         script = '<script type="text/javascript">' + f.read() + '</script>'
@@ -92,23 +80,25 @@ class myHandler(BaseHTTPRequestHandler):
         except:
             pass
         try:
-            req = urllib2.urlopen(url)
-            content = req.read()
-            encoding = req.headers['content-type'].split('charset=')[-1]
+            data = None
+            headers = {
+                'User-Agent': 'fefeliz0r' # wikipedia will sowas D:
+            }
+            req = urllib2.Request(url, data, headers)
+            connection = urllib2.urlopen(req)
+            content = connection.read()
+            encoding = connection.headers['content-type'].split('charset=')[-1]
             try:
                 content = unicode(content, encoding)
             except:
                 print 'Unknown encoding: ' + encoding
-            req.close()
+            connection.close()
             self.send_response(200)
             self.send_header('Content-type','text/html;charset=utf-8')
             self.end_headers()
             content = rebase(url, content)
             content = rebase_links(OWN_URL, content)
             content = self.fixJS(content)
-            #self.find_errors(content)
-            #content = self.add_fefe(content)
-            #print content.encode('utf-8')pdb.set_trace();
             self.wfile.write(content.encode('utf-8'))
         except Exception as e:
             self.wfile.write(self.makeHtml(unicode(e)))
