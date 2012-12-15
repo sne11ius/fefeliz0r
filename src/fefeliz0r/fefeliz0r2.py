@@ -7,8 +7,6 @@ import cgi
 from rebase import rebase, rebase_links
 #from SimpleProxy import SimpleProxy
 from bs4 import BeautifulSoup
-from FefeQuotes import FEFE_PREFIX_QUOTES, FEFE_POSTFIX_QUOTES
-from random import random, choice
 
 # fuckaround for no-bug http://bugs.python.org/issue10865
 from socket import getaddrinfo
