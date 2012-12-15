@@ -8,7 +8,7 @@ import cgi
 from rebase import rebase, rebase_links
 #from SimpleProxy import SimpleProxy
 from bs4 import BeautifulSoup
-
+import codecs
 # fuckaround for no-bug http://bugs.python.org/issue10865
 from socket import getaddrinfo
 getaddrinfo('www.google.com', 80)
@@ -44,7 +44,7 @@ class myHandler(BaseHTTPRequestHandler):
                 idx += 1
     
     def insert_script(self, filename, html):
-        f = open(filename, 'r')
+        f = codecs.open(filename, encoding='utf-8', mode='r')
         script = '<script type="text/javascript">' + f.read() + '</script>'
         insert_position = html.find('</title>') + 8
         html = html[:insert_position] + script + html[insert_position:]
@@ -63,13 +63,6 @@ class myHandler(BaseHTTPRequestHandler):
             
     
     def fixJS(self, html):
-        '''
-        f = open('ajaxFixer.js', 'r')
-        script = '<script type="text/javascript">' + f.read() + '</script>'
-        script = script.replace('$PROXY_URL', PROXY_URL);
-        insert_position = html.find('</title>') + 8
-        html = html[:insert_position] + script + html[insert_position + 1:]
-        '''
         html = self.insert_script('fbomb.js', html)
         html = self.insert_script('fefe_quotes.js', html)
         html = self.insert_script('ajaxFixer.js', html)
@@ -115,10 +108,10 @@ class myHandler(BaseHTTPRequestHandler):
             content = self.fixJS(content)
             #self.find_errors(content)
             #content = self.add_fefe(content)
-            #print content.encode('utf-8')
+            #print content.encode('utf-8')pdb.set_trace();
             self.wfile.write(content.encode('utf-8'))
         except Exception as e:
-            self.wfile.write(self.makeHtml(e))
+            self.wfile.write(self.makeHtml(unicode(e)))
             pass
         return
 

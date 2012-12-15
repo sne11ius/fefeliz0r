@@ -3,7 +3,7 @@ var FEFE_POSTFIX_QUOTES = [
     ' (Danke, Arno)',
     ' WAS FÜR EINE ELENDE FRECHHEIT!!',
     ' OH NEIN!!!',
-    ' <b>Lest euch die Details durch!<b>',
+    ' Lest euch die Details durch!',
     ' Das ist ja mal eine ... ambitionierte Planung *hust* :-)',
     ' Da bleibt also nur eine Erklärung: Klarer Fall von Selbstmord.',
     ' Da weiß man, wohin die Reise geht!',
