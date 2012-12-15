@@ -81,9 +81,13 @@ jQuery(document).ready(function() {
 				$($(story.elem).contents().filter(function() {
 					return 3 == this.nodeType;
 				}).first()).replaceWith(function() {
-					return $(this).text() + choice(FEFE_POSTFIX_QUOTES);
+					if (Math.random() > 0.8) {
+						//show(story, 'story');
+						return choice(FEFE_PREFIX_QUOTES) + $(this).text();
+					}
+					else
+						return $(this).text() + choice(FEFE_POSTFIX_QUOTES);
 				});
-				//show(story, 'story');
 			}
 		});
 	}

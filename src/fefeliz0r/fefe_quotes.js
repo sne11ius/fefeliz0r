@@ -47,8 +47,9 @@ var FEFE_POSTFIX_QUOTES = [
 ];
 
 var FEFE_PREFIX_QUOTES = [
+    'Fnord des Tages: ',
     'Fazialpalmierung der Woche: ',
-    'Ach nee. Na sowas. ',
+    'Ach nee. Na sowas: ',
     'Das wird euch jetzt sicher genau so überraschen wie mich: ',
     'Was wie ein Witz beginnt, wird ab dem 5. Absatz plötzlich spannend: ',
     'Währenddessen im Fox News-Paralleluniversum: ',
