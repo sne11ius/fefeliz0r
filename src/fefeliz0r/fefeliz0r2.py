@@ -32,22 +32,6 @@ REPLACEMENTS = [
 ]
 
 class myHandler(BaseHTTPRequestHandler):
-    def augment_links(self, html):
-        soup = BeautifulSoup(html)
-        for p in soup.findAll('p'):
-            try:
-                if random() > AUGMENTATION_PROB:
-                    if random() > 0.75:
-                        p.append(choice(FEFE_POSTFIX_QUOTES))
-                    else:
-                        p.insert(0, choice(FEFE_PREFIX_QUOTES))
-            except:
-                pass
-        return unicode(soup.prettify(formatter = None))
-    
-    def add_fefe(self, html):
-        return self.augment_links(html)
-
     def find_errors(self, html):
         idx = 0
         while idx is not -1:
@@ -88,6 +72,7 @@ class myHandler(BaseHTTPRequestHandler):
         html = html[:insert_position] + script + html[insert_position + 1:]
         '''
         html = self.insert_script('fbomb.js', html)
+        html = self.insert_script('fefe_quotes.js', html)
         html = self.insert_script('ajaxFixer.js', html)
         html = self.insert_remote_script('https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js' , html)
         html = self.replace_vars(html)

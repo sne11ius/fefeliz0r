@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-FEFE_POSTFIX_QUOTES = [
+var FEFE_POSTFIX_QUOTES = [
     ' (Danke, Christian)',
     ' (Danke, Arno)',
     ' WAS FÜR EINE ELENDE FRECHHEIT!!',
@@ -47,30 +44,30 @@ FEFE_POSTFIX_QUOTES = [
     ' Natürlich bestand zu keinem zeitpunkt gefahr für die bevölkerung',
     ' Erinnert ein bißchen an die Geschichten vom Kriegsende, als die Soldaten der Roten Armee auf dem Heimweg die Wasserhähne abgeschraubt haben sollen, um sie dann zuhause in die Wand zu schrauben und einen Wasserstrahl zu erwarten.',
     ' (Danke Frank)'
-]
+];
 
-FEFE_PREFIX_QUOTES = [
+var FEFE_PREFIX_QUOTES = [
     'Fazialpalmierung der Woche: ',
     'Ach nee. Na sowas. ',
     'Das wird euch jetzt sicher genau so überraschen wie mich: ',
     'Was wie ein Witz beginnt, wird ab dem 5. Absatz plötzlich spannend: ',
     'Währenddessen im Fox News-Paralleluniversum: ',
-    'WTF? '
+    'WTF? ',
     'Klarer Fall von Selbstmord: '
-]
+];
 
-FEFE_INFIX_QUOTES = [
+var FEFE_INFIX_QUOTES = [
     ' (HAHAHAHAHAHAHAHAHAHA) ',
     ' (HAHAHA) ',
     ' (HAHA) ',
     ' WTF? ',
-    ' Wait, WHAT?! '
+    ' Wait, WHAT?! ',
     ' Wow. ',
     ' Harrharrharr. '
-]
+];
 
-FEFE_LINK_WARNINGS = [
+var FEFE_LINK_WARNINGS = [
     ' (Die Webseite ist auf kroatisch, Google Translate hilft)',
     ' Der war auch schon vor meinem Link langsam!',
     ' <b>Update</b> : Jetzt geht die Webseite wieder aber der PDF-Link von gestern nicht mehr. Dieser ranzige Cloud-Mist immer!1!!'
-]
+];
