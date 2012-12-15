@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 #from http://voorloopnul.com/blog/a-python-proxy-in-less-than-100-lines-of-code/
 
