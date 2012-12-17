@@ -37,8 +37,9 @@ def rebase_one(base, url, force_rebase):
     else:
         return url
 
-def rebase(base, soup):
+def rebase(base, data):
     """Rebase the HTML blob data according to base"""
+    soup = BeautifulSoup(data)
     for (tag, attr) in targets:
         for link in soup.findAll(tag):
             try:
@@ -47,10 +48,11 @@ def rebase(base, soup):
                 pass
             else:
                 link[attr] = rebase_one(base, url, False)
-    return soup
+    return unicode(soup.prettify(formatter = None))
 
-def rebase_links(base, soup):
+def rebase_links(base, data):
     """Rebase _all_ 'a' links in the HTML blob data according to base"""
+    soup = BeautifulSoup(data)
     for (tag, attr) in targets_links:
         for link in soup.findAll(tag):
             try:
@@ -60,7 +62,7 @@ def rebase_links(base, soup):
             else:
                 if link[attr] != 'javascript:void(0);':
                     link[attr] = rebase_one(base, url, True)
-    return soup
+    return unicode(soup.prettify(formatter = None))
 
 if __name__ == '__main__':
     try:
