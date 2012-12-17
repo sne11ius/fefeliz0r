@@ -87,19 +87,16 @@ class myHandler(BaseHTTPRequestHandler):
             req = urllib2.Request(url, data, headers)
             connection = urllib2.urlopen(req)
             content = connection.read()
-            encoding = connection.headers['content-type'].split('charset=')[-1]
-            try:
-                content = unicode(content, encoding)
-            except:
-                print 'Unknown encoding: ' + encoding
             connection.close()
+            soup = BeautifulSoup(content)
+            soup = rebase(url, soup)
+            soup = rebase_links(OWN_URL, soup)
+            content = soup.prettify(formatter = None).encode('utf-8')
+            content = self.fixJS(content)
             self.send_response(200)
             self.send_header('Content-type','text/html;charset=utf-8')
             self.end_headers()
-            content = rebase(url, content)
-            content = rebase_links(OWN_URL, content)
-            content = self.fixJS(content)
-            self.wfile.write(content.encode('utf-8'))
+            self.wfile.write(content)
         except Exception as e:
             self.wfile.write(self.makeHtml(unicode(e)))
             pass
