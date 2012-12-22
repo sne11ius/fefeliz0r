@@ -9,6 +9,8 @@ from rebase import rebase, rebase_links
 #from SimpleProxy import SimpleProxy
 from bs4 import BeautifulSoup
 import codecs
+from random import random
+import datetime
 # fuckaround for no-bug http://bugs.python.org/issue10865
 from socket import getaddrinfo
 getaddrinfo('www.google.com', 80)
@@ -21,14 +23,6 @@ except:
 
 PORT = 31337
 OWN_URL = 'http://wasis.nu/mit/fefe/in/'
-#PROXY_PORT = 8081
-#PROXY_URL = 'http://localhost:8081'
-AUGMENTATION_PROB = 0.125
-AUGMENTATION_MIN_LENGTH = 8
-
-REPLACEMENTS = [
-    'PROXY_URL'
-]
 
 class myHandler(BaseHTTPRequestHandler):
     def insert_script(self, filename, html):
@@ -44,27 +38,30 @@ class myHandler(BaseHTTPRequestHandler):
         html = html[:insert_position] + script + html[insert_position:]
         return html;
     
-    def replace_vars(self, txt):
-        for replacement in REPLACEMENTS:
-            txt = txt.replace('$' + replacement, replacement);
-        return txt
-            
-    
     def fixJS(self, html):
         html = self.insert_script('fbomb.js', html)
         html = self.insert_script('fefe_quotes.js', html)
         html = self.insert_script('ajaxFixer.js', html)
         html = self.insert_remote_script('https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js' , html)
-        html = self.replace_vars(html)
         return html
     
     def makeHtml(self, stuff):
         return '<html><body>' + cgi.escape(str(stuff)) + '<body></html>'
     
-    def do_GET(self):
+    def log(self, text):
         with open('fefeliz0r.log', 'a') as logfile:
-            logfile.write('requested: ' + self.requestline + '\n')
-        print 'requested: ' + self.requestline
+            logfile.write(text + '\n')
+        
+    
+    def do_GET(self):
+        now = datetime.datetime.now()
+        self.log('[' + now.strftime("%Y-%m-%d %H:%M") + ']====================================')
+        self.log('requested: ' + self.requestline)
+        if random() > 0.95:
+            self.log('rasing xml-error for the lulz')
+            self.wfile.write(open('not_enough_xml.html', 'r').read())
+            return
+            
         url = split(self.requestline)[1][13:]
         if '' is url or not url.startswith('http://'):
             self.wfile.write(open('no_url.html', 'r').read())
@@ -96,11 +93,13 @@ class myHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type','text/html;charset=utf-8')
             self.end_headers()
-            content = rebase(url, content)
-            content = rebase_links(OWN_URL, content)
-            content = self.fixJS(content)
+            soup = BeautifulSoup(content)
+            soup = rebase(url, soup)
+            soup = rebase_links(OWN_URL, soup)
+            content = self.fixJS(soup.prettify(formatter = None))
             self.wfile.write(content.encode('utf-8'))
         except Exception as e:
+            self.log('Error: ' + str(e));
             self.wfile.write(self.makeHtml(unicode(e)))
             pass
         return
@@ -110,10 +109,6 @@ if __name__ == '__main__':
         server = HTTPServer(('', PORT), myHandler)
         print 'Started httpserver on port ' , PORT
         server.serve_forever()
-        '''
-        proxy_server = SimpleProxy('', PROXY_PORT)
-        proxy_server.main_loop()
-        '''
     
     except KeyboardInterrupt:
         print '^C received, shutting the fuck up'

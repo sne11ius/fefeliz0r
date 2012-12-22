@@ -1,32 +1,19 @@
 "use strict"
-var values = {};
-
 jQuery(document).ready(function() {
-
 	var analyse = function() { 
-		//var tags = ['a'];
 		var tags = ['a', 'h1', 'h2', 'h3', 'p', 'div', 'li', 'span', 'b'];
 		
 		var lists = {};
 		
 		jQuery.each(tags, function(key, tag) {
-			lists[tag] = $(tag).map(function(index, elem) {
-				var e = $(elem),
-					text = $.trim(e.clone().children().remove().end().text()),
-					area = e.outerWidth() * e.outerHeight();
+			lists[tag] = jQuery(tag).map(function(index, elem) {
+				var e = jQuery(elem),
+					text = jQuery.trim(e.clone().children().remove().end().text());
 				var result = {
 					elem: e,
-					width: e.outerWidth(),
-					height: e.outerHeight(),
-					top: e.offset().top,
-					left: e.offset().left,
-					offset: e.offset(),
-					position: e.position(),
-					area: area, 
 					text: text,
-					ratio: text.length / area,
 				};
-				return isFinite(result.ratio) && result.text.length > 20 && 0 != result.ratio ? result : undefined;
+				return result.text.length > 20 ? result : undefined;
 			}).get();
 		});
 		
@@ -67,32 +54,30 @@ jQuery(document).ready(function() {
 	}
 	
 	function augment_links(links) {
-		$.each(links, function(idx, link) {
+		jQuery.each(links, function(idx, link) {
 			if (Math.random() > 0.5) {
 				link.elem.append(' - ' + choice(FEFE_LINK_WARNINGS));
-				//show(link, 'link');
 			}
 		});
 	}
 
 	function augment_storys(storys) {
-		$.each(storys, function(idx, story) {
+		jQuery.each(storys, function(idx, story) {
 			if (Math.random() > 0.3) {
-				$($(story.elem).contents().filter(function() {
+				jQuery(jQuery(story.elem).contents().filter(function() {
 					return 3 == this.nodeType;
 				}).first()).replaceWith(function() {
 					if (Math.random() > 0.8) {
-						//show(story, 'story');
-						return choice(FEFE_PREFIX_QUOTES) + $(this).text();
+						return choice(FEFE_PREFIX_QUOTES) + jQuery(this).text();
 					}
 					else
-						return $(this).text() + choice(FEFE_POSTFIX_QUOTES);
+						return jQuery(this).text() + choice(FEFE_POSTFIX_QUOTES);
 				});
 			}
 		});
 	}
 	
-	$.each(results, function(key, val) {
+	jQuery.each(results, function(key, val) {
 		switch(key) {
 		case 'storys':
 			augment_storys(val);
@@ -105,4 +90,5 @@ jQuery(document).ready(function() {
 			break;
 		}
 	});
+	jQuery('body').append('<div align="right" style="position:relative;bottom:-100px;clear:both;z-index:9001;padding:6px;">Proudly made without PHP, Java, Perl, MySQL and Postgres...<br>...dafür mit dietlibc, libowfat, unter gatling laufend und mit einem tinyldap-Backend.</div>');
 });
