@@ -134,7 +134,8 @@ var FEFE_PREFIX_QUOTES = [
     'Wollt ihr mal was wirklich schlimmes lesen? Ja? Genau der richtige Tag für das Beobachten von Auffahrunfällen? Dann hab ich was für euch! ',
     'Einsicht des Tages: ',
     'Whoa, dem ehemaligen Nachrichtenmagazin ist aufgefallen: ',
-    'Ich sage ja schon seit vielen Jahren, dass Antiviren Snake Oil sind. '
+    'Ich sage ja schon seit vielen Jahren, dass Antiviren Snake Oil sind. ',
+    'Update: Na super, Blog zusammengebrochen. '
 ];
 
 var FEFE_INFIX_QUOTES = [
